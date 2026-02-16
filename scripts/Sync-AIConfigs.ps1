@@ -122,6 +122,13 @@ function Resolve-TemplateVars {
     $base   = if ($Repo.basePath) { $Repo.basePath } else { "/$($Repo.name)" }
     $result = $result -replace '\{\{DOMAIN_NAME\}\}',  $domain
     $result = $result -replace '\{\{BASE_PATH\}\}',    $base
+
+    # Trim trailing whitespace per line (prevents Prettier failures when variables resolve to empty)
+    $lines = $result -split "`n" | ForEach-Object { $_.TrimEnd() }
+    # Remove trailing blank lines, then ensure exactly one trailing newline
+    while ($lines.Count -gt 0 -and $lines[-1] -eq '') { $lines = $lines[0..($lines.Count - 2)] }
+    $result = ($lines -join "`n") + "`n"
+
     return $result
 }
 
@@ -147,8 +154,9 @@ function Set-RepoFile {
     }
     catch { }
 
-    # Base64-encode content
-    $bytes = [System.Text.Encoding]::UTF8.GetBytes($Content)
+    # Normalize line endings to LF and base64-encode
+    $normalized = $Content -replace "`r`n", "`n"
+    $bytes = [System.Text.Encoding]::UTF8.GetBytes($normalized)
     $base64 = [Convert]::ToBase64String($bytes)
 
     $body = @{

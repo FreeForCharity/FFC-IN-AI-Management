@@ -110,12 +110,11 @@ Most text content lives in `src/data/` as JSON files. To update:
 
 ## Asset Path Helper
 
-The site deploys to both `{{DOMAIN_NAME}}` and `https://freeforcharity.github.io/{{REPO_NAME}}/`. The `assetPath()` function from `src/lib/assetPath.ts` handles this automatically.
+The site deploys to `https://freeforcharity.github.io/{{REPO_NAME}}/` (and your custom domain if configured). The `assetPath()` function from `src/lib/assetPath.ts` handles this automatically.
 
 ```tsx
 // Always use assetPath() for images and static assets
 import { assetPath } from '@/lib/assetPath'
-
 ;<img src={assetPath('/images/logo.png')} alt="Logo" />
 ```
 
