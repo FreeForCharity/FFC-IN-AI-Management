@@ -1,0 +1,258 @@
+{
+  "lastAudit": null,
+  "organizations": ["FreeForCharity", "koenig-childhood-cancer-foundation"],
+  "repos": [
+    {
+      "org": "FreeForCharity",
+      "name": "FFC-EX-aariasblueelephant.org",
+      "type": "base",
+      "domain": "aariasblueelephant.org",
+      "basePath": "/FFC-EX-aariasblueelephant.org",
+      "aiConfigs": {},
+      "lastSync": null
+    },
+    {
+      "org": "FreeForCharity",
+      "name": "FFC-Cloudflare-Automation",
+      "type": "powershell-infra",
+      "domain": null,
+      "basePath": "/FFC-Cloudflare-Automation",
+      "aiConfigs": {},
+      "lastSync": null
+    },
+    {
+      "org": "FreeForCharity",
+      "name": "FFC-IN-Single_Page_Template_Jekell",
+      "type": "base",
+      "domain": null,
+      "basePath": "/FFC-IN-Single_Page_Template_Jekell",
+      "aiConfigs": {},
+      "lastSync": null
+    },
+    {
+      "org": "FreeForCharity",
+      "name": "FFC-IN-Single_Page_Template_HTML",
+      "type": "base",
+      "domain": null,
+      "basePath": "/FFC-IN-Single_Page_Template_HTML",
+      "aiConfigs": {},
+      "lastSync": null
+    },
+    {
+      "org": "FreeForCharity",
+      "name": "FFC_Single_Page_Template",
+      "type": "base",
+      "domain": null,
+      "basePath": "/FFC_Single_Page_Template",
+      "aiConfigs": {},
+      "lastSync": null
+    },
+    {
+      "org": "FreeForCharity",
+      "name": "FFC-EX-SRRN.net",
+      "type": "base",
+      "domain": "SRRN.net",
+      "basePath": "/FFC-EX-SRRN.net",
+      "aiConfigs": {},
+      "lastSync": null
+    },
+    {
+      "org": "FreeForCharity",
+      "name": "FFC-EX-thecrookedhouse.net",
+      "type": "base",
+      "domain": "thecrookedhouse.net",
+      "basePath": "/FFC-EX-thecrookedhouse.net",
+      "aiConfigs": {},
+      "lastSync": null
+    },
+    {
+      "org": "FreeForCharity",
+      "name": "FFC-EX-sporting2Impact.org",
+      "type": "base",
+      "domain": "sporting2Impact.org",
+      "basePath": "/FFC-EX-sporting2Impact.org",
+      "aiConfigs": {},
+      "lastSync": null
+    },
+    {
+      "org": "FreeForCharity",
+      "name": "FFC-EX-technomonasteries.org",
+      "type": "base",
+      "domain": "technomonasteries.org",
+      "basePath": "/FFC-EX-technomonasteries.org",
+      "aiConfigs": {},
+      "lastSync": null
+    },
+    {
+      "org": "FreeForCharity",
+      "name": "FFC-EX-nittanypost245.org",
+      "type": "base",
+      "domain": "nittanypost245.org",
+      "basePath": "/FFC-EX-nittanypost245.org",
+      "aiConfigs": {},
+      "lastSync": null
+    },
+    {
+      "org": "FreeForCharity",
+      "name": "FFC-EX-slopestohope.org",
+      "type": "base",
+      "domain": "slopestohope.org",
+      "basePath": "/FFC-EX-slopestohope.org",
+      "aiConfigs": {},
+      "lastSync": null
+    },
+    {
+      "org": "FreeForCharity",
+      "name": "FFC-EX-legioninthewoods.org",
+      "type": "base",
+      "domain": "legioninthewoods.org",
+      "basePath": "/FFC-EX-legioninthewoods.org",
+      "aiConfigs": {},
+      "lastSync": null
+    },
+    {
+      "org": "FreeForCharity",
+      "name": "FFC-IN-ffcadmin.org",
+      "type": "base",
+      "domain": null,
+      "basePath": "/FFC-IN-ffcadmin.org",
+      "aiConfigs": {},
+      "lastSync": null
+    },
+    {
+      "org": "FreeForCharity",
+      "name": "FFC-EX-freedomrisingusa.org",
+      "type": "base",
+      "domain": "freedomrisingusa.org",
+      "basePath": "/FFC-EX-freedomrisingusa.org",
+      "aiConfigs": {},
+      "lastSync": null
+    },
+    {
+      "org": "FreeForCharity",
+      "name": "freeforcharity-web",
+      "type": "base",
+      "domain": null,
+      "basePath": "/freeforcharity-web",
+      "aiConfigs": {},
+      "lastSync": null
+    },
+    {
+      "org": "FreeForCharity",
+      "name": "FFC-EX-AllTypeTowing.com",
+      "type": "base",
+      "domain": "AllTypeTowing.com",
+      "basePath": "/FFC-EX-AllTypeTowing.com",
+      "aiConfigs": {},
+      "lastSync": null
+    },
+    {
+      "org": "FreeForCharity",
+      "name": "FFC-EX-bintobetter.org",
+      "type": "base",
+      "domain": "bintobetter.org",
+      "basePath": "/FFC-EX-bintobetter.org",
+      "aiConfigs": {},
+      "lastSync": null
+    },
+    {
+      "org": "FreeForCharity",
+      "name": "FFC-EX-PAGboosters.org",
+      "type": "base",
+      "domain": "PAGboosters.org",
+      "basePath": "/FFC-EX-PAGboosters.org",
+      "aiConfigs": {},
+      "lastSync": null
+    },
+    {
+      "org": "FreeForCharity",
+      "name": "FFC-IN-Zeffy-Management",
+      "type": "base",
+      "domain": null,
+      "basePath": "/FFC-IN-Zeffy-Management",
+      "aiConfigs": {},
+      "lastSync": null
+    },
+    {
+      "org": "FreeForCharity",
+      "name": "FFC-Static-Site-Capture-Tools",
+      "type": "powershell-infra",
+      "domain": null,
+      "basePath": "/FFC-Static-Site-Capture-Tools",
+      "aiConfigs": {},
+      "lastSync": null
+    },
+    {
+      "org": "FreeForCharity",
+      "name": "FFC-IN-Antigravity-Static-site-agent",
+      "type": "powershell-infra",
+      "domain": null,
+      "basePath": "/FFC-IN-Antigravity-Static-site-agent",
+      "aiConfigs": {},
+      "lastSync": null
+    },
+    {
+      "org": "FreeForCharity",
+      "name": "FFC-EX-SRRN-Static-site-conversion",
+      "type": "base",
+      "domain": null,
+      "basePath": "/FFC-EX-SRRN-Static-site-conversion",
+      "aiConfigs": {},
+      "lastSync": null
+    },
+    {
+      "org": "FreeForCharity",
+      "name": "FFC-Technology-Directory",
+      "type": "base",
+      "domain": null,
+      "basePath": "/FFC-Technology-Directory",
+      "aiConfigs": {},
+      "lastSync": null
+    },
+    {
+      "org": "FreeForCharity",
+      "name": "FreeForCharity.org",
+      "type": "base",
+      "domain": null,
+      "basePath": "/FreeForCharity.org",
+      "aiConfigs": {},
+      "lastSync": null
+    },
+    {
+      "org": "FreeForCharity",
+      "name": "TechnologyMonastery.org",
+      "type": "base",
+      "domain": null,
+      "basePath": "/TechnologyMonastery.org",
+      "aiConfigs": {},
+      "lastSync": null
+    },
+    {
+      "org": "FreeForCharity",
+      "name": "FFC-MicrosoftBot",
+      "type": "base",
+      "domain": null,
+      "basePath": "/FFC-MicrosoftBot",
+      "aiConfigs": {},
+      "lastSync": null
+    },
+    {
+      "org": "FreeForCharity",
+      "name": "FFC-Discussions",
+      "type": "base",
+      "domain": null,
+      "basePath": "/FFC-Discussions",
+      "aiConfigs": {},
+      "lastSync": null
+    },
+    {
+      "org": "koenig-childhood-cancer-foundation",
+      "name": "KCCF-web",
+      "type": "base",
+      "domain": null,
+      "basePath": "/KCCF-web",
+      "aiConfigs": {},
+      "lastSync": null
+    }
+  ]
+}

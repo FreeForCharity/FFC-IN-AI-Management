@@ -1,0 +1,284 @@
+<#
+.SYNOPSIS
+    Syncs AI configuration templates to target FFC repositories.
+
+.DESCRIPTION
+    Reads the inventory from repos.json and pushes assembled AI config files
+    (from templates/base + templates/overlays) to target repos via GitHub API.
+    Creates a PR branch "chore/sync-ai-configs" rather than pushing to main.
+
+.PARAMETER RepoName
+    Sync to a single repo by name.
+
+.PARAMETER RepoType
+    Sync to all repos of a given type (e.g. "base", "powershell-infra").
+
+.PARAMETER All
+    Sync to every repo in the inventory.
+
+.PARAMETER DryRun
+    Show what would be changed without making any modifications.
+
+.PARAMETER Organization
+    GitHub organization. Defaults to "FreeForCharity".
+
+.EXAMPLE
+    .\Sync-AIConfigs.ps1 -RepoName "FFC-EX-legioninthewoods.org" -DryRun
+    .\Sync-AIConfigs.ps1 -RepoType "base" -DryRun
+    .\Sync-AIConfigs.ps1 -All
+#>
+
+[CmdletBinding()]
+param(
+    [string]$RepoName,
+    [string]$RepoType,
+    [switch]$All,
+    [switch]$DryRun,
+    [string]$Organization = "FreeForCharity"
+)
+
+# Import helper
+. "$PSScriptRoot\Get-RepoType.ps1"
+
+# ---------- Validate parameters ----------
+if (-not $RepoName -and -not $RepoType -and -not $All) {
+    Write-Error "Specify one of -RepoName, -RepoType, or -All."
+    return
+}
+
+# ---------- Load inventory ----------
+$inventoryPath = Join-Path $PSScriptRoot "..\inventory\repos.json"
+if (-not (Test-Path $inventoryPath)) {
+    Write-Error "Inventory not found at $inventoryPath. Run Audit-AIConfigs.ps1 first."
+    return
+}
+
+$inventory = Get-Content $inventoryPath -Raw | ConvertFrom-Json
+
+# ---------- Filter target repos ----------
+$targets = @()
+
+foreach ($repo in $inventory.repos) {
+    if ($RepoName -and $repo.name -eq $RepoName) {
+        $targets += $repo
+    }
+    elseif ($RepoType -and $repo.type -eq $RepoType) {
+        $targets += $repo
+    }
+    elseif ($All) {
+        $targets += $repo
+    }
+}
+
+if ($targets.Count -eq 0) {
+    Write-Host "No repos matched the filter criteria." -ForegroundColor Yellow
+    return
+}
+
+Write-Host "Targets: $($targets.Count) repo(s)" -ForegroundColor Cyan
+
+# ---------- Template paths ----------
+$templateRoot = Join-Path $PSScriptRoot "..\templates"
+$basePath      = Join-Path $templateRoot "base"
+
+# ---------- Helper: read a local template file ----------
+function Get-TemplateContent {
+    param([string]$FilePath)
+    if (Test-Path $FilePath) {
+        return Get-Content $FilePath -Raw
+    }
+    return $null
+}
+
+# ---------- Helper: collect files from a directory recursively ----------
+function Get-TemplateFiles {
+    param([string]$Dir)
+    $files = @{}
+    if (Test-Path $Dir) {
+        Get-ChildItem $Dir -Recurse -File | ForEach-Object {
+            $relative = $_.FullName.Substring($Dir.Length + 1) -replace '\\', '/'
+            $files[$relative] = Get-Content $_.FullName -Raw
+        }
+    }
+    return $files
+}
+
+# ---------- Helper: replace template variables ----------
+function Resolve-TemplateVars {
+    param(
+        [string]$Content,
+        [PSCustomObject]$Repo
+    )
+
+    $result = $Content
+    $result = $result -replace '\{\{REPO_NAME\}\}',   $Repo.name
+    $result = $result -replace '\{\{DOMAIN_NAME\}\}',  ($Repo.domain ?? "")
+    $result = $result -replace '\{\{BASE_PATH\}\}',    ($Repo.basePath ?? "/$($Repo.name)")
+    return $result
+}
+
+# ---------- Helper: create or update a file via GitHub API ----------
+function Set-RepoFile {
+    param(
+        [string]$Org,
+        [string]$RepoName,
+        [string]$Branch,
+        [string]$FilePath,
+        [string]$Content,
+        [string]$Message
+    )
+
+    # Check if file already exists on the branch
+    $existingSha = $null
+    try {
+        $existing = gh api "repos/$Org/$RepoName/contents/$FilePath`?ref=$Branch" 2>&1
+        if ($LASTEXITCODE -eq 0) {
+            $parsed = $existing | ConvertFrom-Json -ErrorAction SilentlyContinue
+            $existingSha = $parsed.sha
+        }
+    }
+    catch { }
+
+    # Base64-encode content
+    $bytes = [System.Text.Encoding]::UTF8.GetBytes($Content)
+    $base64 = [Convert]::ToBase64String($bytes)
+
+    $body = @{
+        message = $Message
+        content = $base64
+        branch  = $Branch
+    }
+
+    if ($existingSha) {
+        $body.sha = $existingSha
+    }
+
+    $bodyJson = $body | ConvertTo-Json -Compress
+    $bodyJson | gh api "repos/$Org/$RepoName/contents/$FilePath" --method PUT --input - | Out-Null
+
+    if ($LASTEXITCODE -eq 0) {
+        Write-Host "    Updated: $FilePath" -ForegroundColor Green
+    }
+    else {
+        Write-Host "    FAILED:  $FilePath" -ForegroundColor Red
+    }
+}
+
+# ---------- Process each target repo ----------
+foreach ($repo in $targets) {
+    $org  = $repo.org ?? $Organization
+    $name = $repo.name
+    $type = $repo.type ?? (Get-RepoType -RepoName $name)
+
+    Write-Host "`nProcessing $org/$name (type: $type) ..." -ForegroundColor Cyan
+
+    # 1. Collect base template files
+    $files = Get-TemplateFiles -Dir $basePath
+
+    # 2. Collect overlay files (overwrite or add to base set)
+    $overlayDir = Join-Path $templateRoot "overlays" $type
+    if (Test-Path $overlayDir) {
+        $overlayFiles = Get-TemplateFiles -Dir $overlayDir
+        foreach ($key in $overlayFiles.Keys) {
+            if ($key -like "*.patch") {
+                # .patch files get appended to the corresponding base file
+                $baseKey = $key -replace '\.patch$', ''
+                if ($files.ContainsKey($baseKey)) {
+                    $files[$baseKey] += "`n" + $overlayFiles[$key]
+                }
+                else {
+                    # No base file to patch; create as new file without .patch extension
+                    $files[$baseKey] = $overlayFiles[$key]
+                }
+            }
+            else {
+                $files[$key] = $overlayFiles[$key]
+            }
+        }
+    }
+
+    # 3. Apply template variable replacement
+    $resolvedFiles = @{}
+    foreach ($key in $files.Keys) {
+        $resolvedFiles[$key] = Resolve-TemplateVars -Content $files[$key] -Repo $repo
+    }
+
+    # 4. Dry-run mode: just print
+    if ($DryRun) {
+        Write-Host "  [DRY RUN] Would sync $($resolvedFiles.Count) file(s):" -ForegroundColor Yellow
+        foreach ($f in $resolvedFiles.Keys | Sort-Object) {
+            $preview = $resolvedFiles[$f].Substring(0, [Math]::Min(80, $resolvedFiles[$f].Length)) -replace "`n", " "
+            Write-Host "    $f  ($($resolvedFiles[$f].Length) bytes)  $preview..." -ForegroundColor Gray
+        }
+        continue
+    }
+
+    # 5. Create sync branch from default branch
+    $branchName = "chore/sync-ai-configs"
+
+    # Get default branch ref
+    try {
+        $defaultRef = gh api "repos/$org/$name/git/ref/heads/main" 2>&1 | ConvertFrom-Json
+        $baseSha = $defaultRef.object.sha
+    }
+    catch {
+        Write-Host "  Could not find default branch for $org/$name. Skipping." -ForegroundColor Yellow
+        continue
+    }
+
+    # Create or reset the sync branch
+    try {
+        gh api "repos/$org/$name/git/refs" --method POST --input (
+            @{ ref = "refs/heads/$branchName"; sha = $baseSha } | ConvertTo-Json -Compress
+        ) 2>&1 | Out-Null
+        Write-Host "  Created branch: $branchName" -ForegroundColor Green
+    }
+    catch {
+        # Branch may already exist; update it
+        try {
+            gh api "repos/$org/$name/git/refs/heads/$branchName" --method PATCH --input (
+                @{ sha = $baseSha; force = $true } | ConvertTo-Json -Compress
+            ) 2>&1 | Out-Null
+            Write-Host "  Reset branch: $branchName" -ForegroundColor Yellow
+        }
+        catch {
+            Write-Host "  WARNING: Could not create/reset branch. Skipping $name." -ForegroundColor Red
+            continue
+        }
+    }
+
+    # 6. Push each file
+    foreach ($filePath in $resolvedFiles.Keys | Sort-Object) {
+        Set-RepoFile -Org $org -RepoName $name -Branch $branchName `
+            -FilePath $filePath -Content $resolvedFiles[$filePath] `
+            -Message "chore: sync AI config - $filePath"
+    }
+
+    # 7. Create pull request
+    Write-Host "  Creating pull request ..." -ForegroundColor Cyan
+    $prBody = @"
+## AI Config Sync
+
+Automated sync of AI configuration files from **FFC-IN-AI-Management** templates.
+
+### Files updated
+$( ($resolvedFiles.Keys | Sort-Object | ForEach-Object { "- ``$_``" }) -join "`n" )
+
+### Template type
+- Base: ``templates/base/``
+- Overlay: ``templates/overlays/$type/``
+
+---
+*Created by ``scripts/Sync-AIConfigs.ps1``*
+"@
+
+    gh pr create --repo "$org/$name" `
+        --head $branchName `
+        --base main `
+        --title "chore: sync AI configuration files" `
+        --body $prBody 2>&1 | ForEach-Object {
+        Write-Host "  $_" -ForegroundColor Green
+    }
+}
+
+Write-Host "`nSync complete." -ForegroundColor Cyan
