@@ -2,7 +2,7 @@
 
 Hey Gemini! Welcome to {{REPO_NAME}}.
 
-**Project:** {{REPO_NAME}} -- a Free For Charity website for {{DOMAIN_NAME}}
+**Project:** {{REPO_NAME}} -- a Free For Charity nonprofit website{{DOMAIN_SUFFIX}}
 
 Free For Charity provides free, professionally built websites for 501(c)(3) nonprofit organizations. This repo is one of ~25 charity sites in the FFC family.
 

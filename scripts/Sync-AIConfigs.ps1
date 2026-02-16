@@ -103,7 +103,7 @@ function Get-TemplateFiles {
             } else {
                 $relative = $_.Name
             }
-            $files[$relative] = Get-Content $_.FullName -Raw
+            $files[$relative] = Get-Content $_.FullName -Raw -Encoding UTF8
         }
     }
     return $files
@@ -119,9 +119,11 @@ function Resolve-TemplateVars {
     $result = $Content
     $result = $result -replace '\{\{REPO_NAME\}\}',   $Repo.name
     $domain = if ($Repo.domain) { $Repo.domain } else { "" }
+    $domainSuffix = if ($Repo.domain) { " for $($Repo.domain)" } else { "" }
     $base   = if ($Repo.basePath) { $Repo.basePath } else { "/$($Repo.name)" }
-    $result = $result -replace '\{\{DOMAIN_NAME\}\}',  $domain
-    $result = $result -replace '\{\{BASE_PATH\}\}',    $base
+    $result = $result -replace '\{\{DOMAIN_SUFFIX\}\}', $domainSuffix
+    $result = $result -replace '\{\{DOMAIN_NAME\}\}',   $domain
+    $result = $result -replace '\{\{BASE_PATH\}\}',     $base
 
     # Trim trailing whitespace per line (prevents Prettier failures when variables resolve to empty)
     $lines = $result -split "`n" | ForEach-Object { $_.TrimEnd() }

@@ -1,6 +1,6 @@
 # Copilot Instructions: {{REPO_NAME}}
 
-Free For Charity website for {{DOMAIN_NAME}}. Next.js static site on GitHub Pages.
+Free For Charity nonprofit website{{DOMAIN_SUFFIX}}. Next.js static site on GitHub Pages.
 
 ## Workflow
 

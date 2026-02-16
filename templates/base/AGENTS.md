@@ -1,6 +1,6 @@
 # AI Agent Instructions: {{REPO_NAME}}
 
-**Project:** {{REPO_NAME}} -- a Free For Charity website for {{DOMAIN_NAME}}
+**Project:** {{REPO_NAME}} -- a Free For Charity nonprofit website{{DOMAIN_SUFFIX}}
 
 **Organization:** [Free For Charity](https://freeforcharity.org) provides free, professionally built websites for 501(c)(3) nonprofit organizations. Every repo in this organization serves that mission.
 
@@ -90,7 +90,7 @@ Component files use PascalCase: `HeroSection.tsx`, `DonateButton.tsx`.
 
 ## GitHub Pages & Asset Paths
 
-These sites deploy to both a custom domain (e.g., `{{DOMAIN_NAME}}`) and a GitHub Pages subpath (e.g., `https://freeforcharity.github.io/{{REPO_NAME}}/`).
+These sites deploy to `https://freeforcharity.github.io/{{REPO_NAME}}/` and optionally to a custom domain if one is configured for this repo.
 
 **Always use the `assetPath()` helper** from `src/lib/assetPath.ts` for image and asset references:
 

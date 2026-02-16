@@ -2,7 +2,7 @@
 
 Welcome, Claude! This document provides specific instructions for working on {{REPO_NAME}}.
 
-**Project:** {{REPO_NAME}} -- a Free For Charity website for {{DOMAIN_NAME}}
+**Project:** {{REPO_NAME}} -- a Free For Charity nonprofit website{{DOMAIN_SUFFIX}}
 
 See **AGENTS.md** for the full project reference including architecture, commands, conventions, and security rules. This file covers what is different or specific to your capabilities as Claude Code.
 

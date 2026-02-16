@@ -8,12 +8,12 @@ Free For Charity (FFC) provides free websites and domain management for 501(c)(3
 
 Use descriptive prefixes:
 
-- `Add:` — New feature or file
-- `Fix:` — Bug fix
-- `Update:` — Enhancement to existing feature
-- `Refactor:` — Code restructuring without behavior change
-- `Docs:` — Documentation only
-- `Security:` — Security-related change
+- `Add:` -- New feature or file
+- `Fix:` -- Bug fix
+- `Update:` -- Enhancement to existing feature
+- `Refactor:` -- Code restructuring without behavior change
+- `Docs:` -- Documentation only
+- `Security:` -- Security-related change
 
 ## PR Workflow
 
