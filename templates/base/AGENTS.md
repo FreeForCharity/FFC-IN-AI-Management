@@ -63,7 +63,7 @@ src/
     layout.tsx          # Root layout
     [route]/page.tsx     # Additional routes (e.g., privacy-policy/)
   components/           # Reusable UI components
-  data/                 # TypeScript content modules (site copy, metadata)
+  data/                 # Content modules (.ts) and JSON data files
   lib/                  # Utility functions and helpers
     assetPath.ts        # GitHub Pages asset path helper
 public/                 # Static assets (Images/, Svgs/, fonts, favicons)

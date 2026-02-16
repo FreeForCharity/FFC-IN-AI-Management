@@ -47,7 +47,7 @@ npm run test:e2e     # Run Playwright E2E tests
 src/
   app/            --> Pages and routes (App Router)
   components/     --> Reusable UI components
-  data/           --> TypeScript content modules (site copy, metadata)
+  data/           --> Content modules (.ts) and JSON data files
   lib/            --> Utilities (including assetPath helper)
 public/           --> Static assets (Images/, Svgs/, fonts)
 ```
@@ -83,9 +83,9 @@ public/           --> Static assets (Images/, Svgs/, fonts)
 
 ### Updating Site Content
 
-Most text content lives in `src/data/` as TypeScript modules. To update:
+Most text content lives in `src/data/` as `.ts` modules or `.json` files in subdirectories. To update:
 
-1. Find the relevant `.ts` file in `src/data/`
+1. Find the relevant file in `src/data/`
 2. Edit the text values (keep the data structure intact)
 3. Run `npm run build` to verify nothing breaks
 
