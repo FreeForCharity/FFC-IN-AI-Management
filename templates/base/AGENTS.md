@@ -8,29 +8,29 @@
 
 ## Tech Stack
 
-| Layer | Technology |
-|-------|-----------|
-| Framework | Next.js (latest) with App Router |
-| Language | TypeScript (strict mode) |
-| Styling | Tailwind CSS |
-| Export | Static (`output: 'export'` in next.config.ts) |
-| Hosting | GitHub Pages (custom domain + subpath fallback) |
-| CI/CD | GitHub Actions |
-| Testing | Jest + Testing Library, Playwright (E2E), jest-axe (accessibility) |
+| Layer     | Technology                                                         |
+| --------- | ------------------------------------------------------------------ |
+| Framework | Next.js (latest) with App Router                                   |
+| Language  | TypeScript (strict mode)                                           |
+| Styling   | Tailwind CSS                                                       |
+| Export    | Static (`output: 'export'` in next.config.ts)                      |
+| Hosting   | GitHub Pages (custom domain + subpath fallback)                    |
+| CI/CD     | GitHub Actions                                                     |
+| Testing   | Jest + Testing Library, Playwright (E2E), jest-axe (accessibility) |
 
 ---
 
 ## Core Commands
 
-| Command | What It Does | Typical Duration |
-|---------|-------------|-----------------|
-| `npm install` | Install dependencies | ~17s |
-| `npm run dev` | Start dev server | ~1s startup |
-| `npm run format` | Run Prettier to format code | ~2s |
-| `npm run lint` | Run ESLint | ~2s |
-| `npm test` | Run Jest unit tests | ~5s |
-| `npm run build` | Production static build | ~30s |
-| `npm run test:e2e` | Run Playwright E2E tests | ~15s |
+| Command            | What It Does                | Typical Duration |
+| ------------------ | --------------------------- | ---------------- |
+| `npm install`      | Install dependencies        | ~17s             |
+| `npm run dev`      | Start dev server            | ~1s startup      |
+| `npm run format`   | Run Prettier to format code | ~2s              |
+| `npm run lint`     | Run ESLint                  | ~2s              |
+| `npm test`         | Run Jest unit tests         | ~5s              |
+| `npm run build`    | Production static build     | ~30s             |
+| `npm run test:e2e` | Run Playwright E2E tests    | ~15s             |
 
 **NEVER CANCEL long-running commands.** Builds and E2E tests take time. Set your timeout to 180+ seconds and let them finish.
 
@@ -79,6 +79,7 @@ tsconfig.json           # TypeScript configuration
 **ALL route folders MUST use kebab-case.** This is an SEO best practice per Google Search Central. URLs like `/about-us` are preferred over `/aboutUs` or `/about_us`.
 
 Examples:
+
 - `src/app/about-us/page.tsx` (correct)
 - `src/app/aboutUs/page.tsx` (wrong)
 - `src/app/contact-form/page.tsx` (correct)
@@ -121,11 +122,11 @@ The `NEXT_PUBLIC_BASE_PATH` environment variable controls the `basePath` in `nex
 
 ## Testing Strategy
 
-| Type | Tool | Purpose |
-|------|------|---------|
-| Unit | Jest + Testing Library | Component rendering, utility functions |
-| Accessibility | jest-axe | WCAG compliance, ARIA validation |
-| E2E | Playwright | Full page navigation, visual regression |
+| Type          | Tool                   | Purpose                                 |
+| ------------- | ---------------------- | --------------------------------------- |
+| Unit          | Jest + Testing Library | Component rendering, utility functions  |
+| Accessibility | jest-axe               | WCAG compliance, ARIA validation        |
+| E2E           | Playwright             | Full page navigation, visual regression |
 
 **Accessibility target:** WCAG AA compliance. The jest-axe integration catches common ARIA issues, color contrast violations, and missing landmarks.
 
@@ -143,15 +144,15 @@ The `NEXT_PUBLIC_BASE_PATH` environment variable controls the `basePath` in `nex
 
 Use descriptive prefixes:
 
-| Prefix | When to Use |
-|--------|------------|
-| `Add:` | New feature or page |
-| `Fix:` | Bug fix |
-| `Update:` | Enhancement to existing feature |
+| Prefix      | When to Use                             |
+| ----------- | --------------------------------------- |
+| `Add:`      | New feature or page                     |
+| `Fix:`      | Bug fix                                 |
+| `Update:`   | Enhancement to existing feature         |
 | `Refactor:` | Code restructuring (no behavior change) |
-| `Docs:` | Documentation only |
-| `Test:` | Adding or updating tests |
-| `Chore:` | Build config, dependencies, CI |
+| `Docs:`     | Documentation only                      |
+| `Test:`     | Adding or updating tests                |
+| `Chore:`    | Build config, dependencies, CI          |
 
 Example: `Add: volunteer signup form with validation`
 

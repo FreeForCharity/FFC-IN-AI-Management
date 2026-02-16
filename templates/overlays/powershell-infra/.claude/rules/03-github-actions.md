@@ -9,12 +9,12 @@
 
 GitHub Environments used for secret scoping:
 
-| Environment | Secrets |
-|---|---|
+| Environment       | Secrets                                                                         |
+| ----------------- | ------------------------------------------------------------------------------- |
 | `cloudflare-prod` | `FFC_CLOUDFLARE_API_TOKEN_ZONE_AND_DNS`, `CM_CLOUDFLARE_API_TOKEN_ZONE_AND_DNS` |
-| `m365-prod` | `FFC_AZURE_CLIENT_ID`, `FFC_AZURE_TENANT_ID` |
-| `github-prod` | `CBM_TOKEN` |
-| `wpmudev-prod` | `FFC_WPMUDEV_GA_API_Token` |
+| `m365-prod`       | `FFC_AZURE_CLIENT_ID`, `FFC_AZURE_TENANT_ID`                                    |
+| `github-prod`     | `CBM_TOKEN`                                                                     |
+| `wpmudev-prod`    | `FFC_WPMUDEV_GA_API_Token`                                                      |
 
 ## Secret Usage in Workflows
 

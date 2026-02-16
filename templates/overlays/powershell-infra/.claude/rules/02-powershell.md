@@ -32,4 +32,4 @@
 - PSScriptAnalyzer: PowerShell linting (errors fail CI)
 - Invoke-Formatter: PowerShell formatting (diff fails CI)
 - actionlint: GitHub Actions YAML validation
-- Sensitive file detection: Blocks *.pem, *.key, .env commits
+- Sensitive file detection: Blocks _.pem, _.key, .env commits

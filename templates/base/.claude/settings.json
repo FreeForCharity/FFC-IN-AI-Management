@@ -7,10 +7,6 @@
       "Bash(git *)",
       "Bash(gh *)"
     ],
-    "deny": [
-      "Bash(rm -rf *)",
-      "Bash(*API_TOKEN*)",
-      "Bash(*SECRET*)"
-    ]
+    "deny": ["Bash(rm -rf *)", "Bash(*API_TOKEN*)", "Bash(*SECRET*)"]
   }
 }

@@ -22,11 +22,11 @@ You have full terminal access via the Bash tool. Use it for all CLI operations.
 
 **Set timeout to 180+ seconds** for these commands:
 
-| Command | Why |
-|---------|-----|
-| `npm run build` | Static export can take 30-60s; do not cancel early |
-| `npm run test:e2e` | Playwright launches browsers; needs time |
-| `npm install` | Network-dependent; can be slow on first run |
+| Command            | Why                                                |
+| ------------------ | -------------------------------------------------- |
+| `npm run build`    | Static export can take 30-60s; do not cancel early |
+| `npm run test:e2e` | Playwright launches browsers; needs time           |
+| `npm install`      | Network-dependent; can be slow on first run        |
 
 **NEVER CANCEL a running build, test, or install command.** Let it finish. If it fails, read the error output.
 
@@ -52,12 +52,12 @@ If any step fails, fix the issue and re-run from that step forward.
 
 You may have access to these MCP servers. Use them when available:
 
-| Server | What It Provides |
-|--------|-----------------|
+| Server             | What It Provides                                         |
+| ------------------ | -------------------------------------------------------- |
 | **Playwright MCP** | Browser automation, screenshots, accessibility snapshots |
-| **GitHub MCP** | Issue/PR management, repository operations |
-| **Cloudflare MCP** | DNS records, Pages deployments, Workers |
-| **Sentry MCP** | Error tracking, performance monitoring |
+| **GitHub MCP**     | Issue/PR management, repository operations               |
+| **Cloudflare MCP** | DNS records, Pages deployments, Workers                  |
+| **Sentry MCP**     | Error tracking, performance monitoring                   |
 
 Check your available tools at the start of each session. If an MCP server is available, prefer it over CLI alternatives for that domain.
 
@@ -67,12 +67,12 @@ Check your available tools at the start of each session. If an MCP server is ava
 
 Check `.claude/agents/` for custom agent definitions. Common agents include:
 
-| Agent | Purpose |
-|-------|---------|
-| `dns-audit` | Audit DNS records for correctness |
+| Agent         | Purpose                               |
+| ------------- | ------------------------------------- |
+| `dns-audit`   | Audit DNS records for correctness     |
 | `site-health` | Check site availability, SSL, headers |
-| `pr-reviewer` | Automated PR review checklist |
-| `onboarding` | New repo setup and configuration |
+| `pr-reviewer` | Automated PR review checklist         |
+| `onboarding`  | New repo setup and configuration      |
 
 Invoke these when the task matches their purpose. If no matching agent exists, proceed with your general capabilities.
 

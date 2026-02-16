@@ -12,14 +12,14 @@ See **AGENTS.md** for the complete project reference. This file gives you the pr
 
 ## Quick Context
 
-| What | Detail |
-|------|--------|
-| Framework | Next.js (latest) with App Router |
-| Language | TypeScript (strict) |
-| Styling | Tailwind CSS |
-| Output | Static export (`output: 'export'`) |
-| Hosting | GitHub Pages (custom domain + subpath) |
-| Tests | Jest + Testing Library, Playwright (E2E), jest-axe (a11y) |
+| What      | Detail                                                    |
+| --------- | --------------------------------------------------------- |
+| Framework | Next.js (latest) with App Router                          |
+| Language  | TypeScript (strict)                                       |
+| Styling   | Tailwind CSS                                              |
+| Output    | Static export (`output: 'export'`)                        |
+| Hosting   | GitHub Pages (custom domain + subpath)                    |
+| Tests     | Jest + Testing Library, Playwright (E2E), jest-axe (a11y) |
 
 The site is **fully static**. No server-side rendering, no API routes, no middleware. Every page must be renderable at build time.
 
@@ -71,13 +71,13 @@ public/           --> Static assets (images, fonts)
        <main>
          <h1>Volunteer Signup</h1>
        </main>
-     );
+     )
    }
    ```
 3. Add any images to `public/images/` and reference them with `assetPath()`:
    ```tsx
-   import { assetPath } from '@/lib/assetPath';
-   <img src={assetPath('/images/volunteers.jpg')} alt="Volunteers" />
+   import { assetPath } from '@/lib/assetPath'
+   ;<img src={assetPath('/images/volunteers.jpg')} alt="Volunteers" />
    ```
 4. Run the pre-commit checklist: `npm run format && npm run lint && npm test && npm run build`
 
@@ -114,9 +114,9 @@ The site deploys to both `{{DOMAIN_NAME}}` and `https://freeforcharity.github.io
 
 ```tsx
 // Always use assetPath() for images and static assets
-import { assetPath } from '@/lib/assetPath';
+import { assetPath } from '@/lib/assetPath'
 
-<img src={assetPath('/images/logo.png')} alt="Logo" />
+;<img src={assetPath('/images/logo.png')} alt="Logo" />
 ```
 
 Never hardcode absolute paths to assets. They will break on one of the two deployment targets.
