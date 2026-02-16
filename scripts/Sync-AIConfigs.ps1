@@ -162,13 +162,20 @@ function Set-RepoFile {
     }
 
     $bodyJson = $body | ConvertTo-Json -Compress
-    $bodyJson | gh api "repos/$Org/$RepoName/contents/$FilePath" --method PUT --input - | Out-Null
+    $tmpFile = [System.IO.Path]::GetTempFileName()
+    try {
+        [System.IO.File]::WriteAllText($tmpFile, $bodyJson)
+        gh api "repos/$Org/$RepoName/contents/$FilePath" --method PUT --input $tmpFile 2>&1 | Out-Null
 
-    if ($LASTEXITCODE -eq 0) {
-        Write-Host "    Updated: $FilePath" -ForegroundColor Green
+        if ($LASTEXITCODE -eq 0) {
+            Write-Host "    Updated: $FilePath" -ForegroundColor Green
+        }
+        else {
+            Write-Host "    FAILED:  $FilePath" -ForegroundColor Red
+        }
     }
-    else {
-        Write-Host "    FAILED:  $FilePath" -ForegroundColor Red
+    finally {
+        Remove-Item $tmpFile -ErrorAction SilentlyContinue
     }
 }
 
@@ -235,24 +242,32 @@ foreach ($repo in $targets) {
     }
 
     # Create or reset the sync branch
+    $branchTmp = [System.IO.Path]::GetTempFileName()
     try {
-        gh api "repos/$org/$name/git/refs" --method POST --input (
-            @{ ref = "refs/heads/$branchName"; sha = $baseSha } | ConvertTo-Json -Compress
-        ) 2>&1 | Out-Null
-        Write-Host "  Created branch: $branchName" -ForegroundColor Green
+        $createJson = @{ ref = "refs/heads/$branchName"; sha = $baseSha } | ConvertTo-Json -Compress
+        [System.IO.File]::WriteAllText($branchTmp, $createJson)
+        gh api "repos/$org/$name/git/refs" --method POST --input $branchTmp 2>&1 | Out-Null
+
+        if ($LASTEXITCODE -eq 0) {
+            Write-Host "  Created branch: $branchName" -ForegroundColor Green
+        }
+        else {
+            # Branch may already exist; reset it
+            $resetJson = @{ sha = $baseSha; force = $true } | ConvertTo-Json -Compress
+            [System.IO.File]::WriteAllText($branchTmp, $resetJson)
+            gh api "repos/$org/$name/git/refs/heads/$branchName" --method PATCH --input $branchTmp 2>&1 | Out-Null
+
+            if ($LASTEXITCODE -eq 0) {
+                Write-Host "  Reset branch: $branchName" -ForegroundColor Yellow
+            }
+            else {
+                Write-Host "  WARNING: Could not create/reset branch. Skipping $name." -ForegroundColor Red
+                continue
+            }
+        }
     }
-    catch {
-        # Branch may already exist; update it
-        try {
-            gh api "repos/$org/$name/git/refs/heads/$branchName" --method PATCH --input (
-                @{ sha = $baseSha; force = $true } | ConvertTo-Json -Compress
-            ) 2>&1 | Out-Null
-            Write-Host "  Reset branch: $branchName" -ForegroundColor Yellow
-        }
-        catch {
-            Write-Host "  WARNING: Could not create/reset branch. Skipping $name." -ForegroundColor Red
-            continue
-        }
+    finally {
+        Remove-Item $branchTmp -ErrorAction SilentlyContinue
     }
 
     # 6. Push each file
