@@ -82,6 +82,6 @@ Invoke these when the task matches their purpose. If no matching agent exists, p
 
 - **Always create a branch.** Never commit directly to `main`.
 - **Link PRs to issues** with `Fixes #NNN` or `Refs #NNN` in the PR body.
-- **Commit messages** use prefixes: `Add:`, `Fix:`, `Update:`, `Refactor:`, `Docs:`, `Test:`, `Chore:`
+- **Commit messages** use Conventional Commits: `feat:`, `fix:`, `docs:`, `style:`, `refactor:`, `test:`, `chore:`
 - **kebab-case** for all route folder names (SEO requirement).
 - **Use `assetPath()`** for all image and asset references (GitHub Pages compatibility).

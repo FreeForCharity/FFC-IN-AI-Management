@@ -23,8 +23,8 @@
 ## Local Development
 
 - Use `.env` files for secrets (excluded from git via `.gitignore`)
-- Use environment variables: `export CLOUDFLARE_API_TOKEN="your-token-here"`
-- ONLY commit `.env.example` with placeholder values
+- Set secrets as environment variables in `.env` (never run export commands with real tokens)
+- ONLY commit `.env.example` with placeholder values (no real tokens)
 
 ## If a User Provides a Secret
 

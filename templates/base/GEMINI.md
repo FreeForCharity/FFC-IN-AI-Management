@@ -14,7 +14,7 @@ See **AGENTS.md** for the complete project reference. This file gives you the pr
 
 | What      | Detail                                                    |
 | --------- | --------------------------------------------------------- |
-| Framework | Next.js (latest) with App Router                          |
+| Framework | Next.js with App Router (see package.json)                |
 | Language  | TypeScript (strict)                                       |
 | Styling   | Tailwind CSS                                              |
 | Output    | Static export (`output: 'export'`)                        |
@@ -102,7 +102,7 @@ Most text content lives in `src/data/` as JSON files. To update:
 ### Creating a Pull Request
 
 1. Create a branch: `git checkout -b fix/descriptive-name`
-2. Make your changes and commit with a prefix: `git commit -m "Fix: resolve broken link on about page"`
+2. Make your changes and commit using Conventional Commits: `git commit -m "fix: resolve broken link on about page"`
 3. Push and open a PR that references the issue: `Fixes #42`
 4. All CI checks must pass before merging
 

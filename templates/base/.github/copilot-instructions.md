@@ -28,7 +28,7 @@ Issue -> branch -> PR -> merge queue. No direct commits to main.
 - Route folders: **kebab-case only** (`about-us/`, not `aboutUs/`)
 - Asset paths: use `assetPath()` from `src/lib/assetPath.ts` for all images
 - `NEXT_PUBLIC_BASE_PATH` controls basePath for GitHub Pages subpath
-- Commit prefixes: `Add:`, `Fix:`, `Update:`, `Refactor:`, `Docs:`, `Test:`, `Chore:`
+- Conventional Commits: `feat:`, `fix:`, `docs:`, `style:`, `refactor:`, `test:`, `chore:`
 
 ## CI Enforcement
 

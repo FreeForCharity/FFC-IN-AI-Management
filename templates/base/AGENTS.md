@@ -10,7 +10,7 @@
 
 | Layer     | Technology                                                         |
 | --------- | ------------------------------------------------------------------ |
-| Framework | Next.js (latest) with App Router                                   |
+| Framework | Next.js with App Router (see package.json for version)             |
 | Language  | TypeScript (strict mode)                                           |
 | Styling   | Tailwind CSS                                                       |
 | Export    | Static (`output: 'export'` in next.config.ts)                      |
@@ -61,7 +61,7 @@ src/
   app/                  # Next.js App Router -- pages and layouts
     page.tsx            # Home page
     layout.tsx          # Root layout
-    about/page.tsx      # Example route: /about
+    [route]/page.tsx     # Additional routes (e.g., privacy-policy/)
   components/           # Reusable UI components
   data/                 # JSON content files (site copy, metadata)
   lib/                  # Utility functions and helpers
@@ -142,19 +142,19 @@ The `NEXT_PUBLIC_BASE_PATH` environment variable controls the `basePath` in `nex
 
 ## Commit Message Format
 
-Use descriptive prefixes:
+Use [Conventional Commits](https://www.conventionalcommits.org/) format: `<type>: <description>`
 
-| Prefix      | When to Use                             |
+| Type        | When to Use                             |
 | ----------- | --------------------------------------- |
-| `Add:`      | New feature or page                     |
-| `Fix:`      | Bug fix                                 |
-| `Update:`   | Enhancement to existing feature         |
-| `Refactor:` | Code restructuring (no behavior change) |
-| `Docs:`     | Documentation only                      |
-| `Test:`     | Adding or updating tests                |
-| `Chore:`    | Build config, dependencies, CI          |
+| `feat:`     | New feature or page                     |
+| `fix:`      | Bug fix                                 |
+| `docs:`     | Documentation only                      |
+| `style:`    | Formatting (no code change)             |
+| `refactor:` | Code restructuring (no behavior change) |
+| `test:`     | Adding or updating tests                |
+| `chore:`    | Build config, dependencies, CI          |
 
-Example: `Add: volunteer signup form with validation`
+Example: `feat: add volunteer signup form with validation`
 
 ---
 

@@ -6,14 +6,15 @@ Free For Charity (FFC) provides free websites and domain management for 501(c)(3
 
 ## Commit Messages
 
-Use descriptive prefixes:
+Use [Conventional Commits](https://www.conventionalcommits.org/) format: `<type>: <description>`
 
-- `Add:` -- New feature or file
-- `Fix:` -- Bug fix
-- `Update:` -- Enhancement to existing feature
-- `Refactor:` -- Code restructuring without behavior change
-- `Docs:` -- Documentation only
-- `Security:` -- Security-related change
+- `feat:` -- New feature or page
+- `fix:` -- Bug fix
+- `docs:` -- Documentation only
+- `style:` -- Formatting (no code change)
+- `refactor:` -- Code restructuring without behavior change
+- `test:` -- Adding or updating tests
+- `chore:` -- Build config, dependencies, CI
 
 ## PR Workflow
 
