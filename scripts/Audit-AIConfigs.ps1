@@ -55,7 +55,7 @@ foreach ($org in $Organizations) {
 
     $repoJson = gh repo list $org --limit 100 --json name 2>&1
     if ($LASTEXITCODE -ne 0) {
-        Write-Host "  WARNING: Could not list repos for $org — $repoJson" -ForegroundColor Yellow
+        Write-Host "  WARNING: Could not list repos for $org - $repoJson" -ForegroundColor Yellow
         continue
     }
 

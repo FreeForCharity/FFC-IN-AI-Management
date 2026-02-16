@@ -95,8 +95,14 @@ function Get-TemplateFiles {
     param([string]$Dir)
     $files = @{}
     if (Test-Path $Dir) {
-        Get-ChildItem $Dir -Recurse -File | ForEach-Object {
-            $relative = $_.FullName.Substring($Dir.Length + 1) -replace '\\', '/'
+        $resolved = (Resolve-Path $Dir).Path.TrimEnd('\', '/')
+        Get-ChildItem $resolved -Recurse -File | ForEach-Object {
+            $full = $_.FullName
+            if ($full.Length -gt ($resolved.Length + 1)) {
+                $relative = $full.Substring($resolved.Length + 1) -replace '\\', '/'
+            } else {
+                $relative = $_.Name
+            }
             $files[$relative] = Get-Content $_.FullName -Raw
         }
     }
@@ -112,8 +118,10 @@ function Resolve-TemplateVars {
 
     $result = $Content
     $result = $result -replace '\{\{REPO_NAME\}\}',   $Repo.name
-    $result = $result -replace '\{\{DOMAIN_NAME\}\}',  ($Repo.domain ?? "")
-    $result = $result -replace '\{\{BASE_PATH\}\}',    ($Repo.basePath ?? "/$($Repo.name)")
+    $domain = if ($Repo.domain) { $Repo.domain } else { "" }
+    $base   = if ($Repo.basePath) { $Repo.basePath } else { "/$($Repo.name)" }
+    $result = $result -replace '\{\{DOMAIN_NAME\}\}',  $domain
+    $result = $result -replace '\{\{BASE_PATH\}\}',    $base
     return $result
 }
 
@@ -166,9 +174,9 @@ function Set-RepoFile {
 
 # ---------- Process each target repo ----------
 foreach ($repo in $targets) {
-    $org  = $repo.org ?? $Organization
+    $org  = if ($repo.org) { $repo.org } else { $Organization }
     $name = $repo.name
-    $type = $repo.type ?? (Get-RepoType -RepoName $name)
+    $type = if ($repo.type) { $repo.type } else { Get-RepoType -RepoName $name }
 
     Write-Host "`nProcessing $org/$name (type: $type) ..." -ForegroundColor Cyan
 
@@ -176,7 +184,7 @@ foreach ($repo in $targets) {
     $files = Get-TemplateFiles -Dir $basePath
 
     # 2. Collect overlay files (overwrite or add to base set)
-    $overlayDir = Join-Path $templateRoot "overlays" $type
+    $overlayDir = Join-Path (Join-Path $templateRoot "overlays") $type
     if (Test-Path $overlayDir) {
         $overlayFiles = Get-TemplateFiles -Dir $overlayDir
         foreach ($key in $overlayFiles.Keys) {
