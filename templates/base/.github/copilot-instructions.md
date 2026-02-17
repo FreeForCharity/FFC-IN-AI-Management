@@ -16,7 +16,7 @@ Issue -> branch -> PR -> merge queue. No direct commits to main.
 
 ## Architecture
 
-- **Framework:** Next.js App Router, TypeScript, Tailwind CSS
+- **Framework:** Next.js App Router, TypeScript, Tailwind CSS v4
 - **Output:** Static export (`output: 'export'` in next.config.ts)
 - **Pages:** `src/app/` (App Router conventions)
 - **Components:** `src/components/`
