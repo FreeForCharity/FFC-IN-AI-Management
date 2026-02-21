@@ -21,6 +21,7 @@ operates within that specialized context.
 | cross-repo-sync | `cross-repo-sync.md` | Check AI config status across all FFC repositories |
 | pr-reviewer | `pr-reviewer.md` | Review PRs with FFC-specific awareness |
 | onboarding | `onboarding.md` | Guide setup of a new charity website in the FFC system |
+| copilot-review-cycle | `copilot-review-cycle.md` | Automate Copilot code review feedback loop until clean |
 
 ## How These Are Deployed
 
