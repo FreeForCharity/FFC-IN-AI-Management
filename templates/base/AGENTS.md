@@ -117,6 +117,35 @@ The `NEXT_PUBLIC_BASE_PATH` environment variable controls the `basePath` in `nex
 - For local development, use `.env` files (excluded from git via `.gitignore`)
 - If a user provides a secret, **DO NOT** write it in any file. Instruct them to add it to GitHub Secrets or a local `.env` file.
 
+### Ephemeral CI auth artifacts — never commit, even by accident
+
+GitHub Actions auth steps frequently write short-lived credential files to the workflow's working directory (e.g. `google-github-actions/auth@v2` writes `gha-creds-*.json` containing an OIDC JWT bound to the workflow run). These files are **safe to use but dangerous to commit** — even though they expire in hours, GitHub Secret Scanning will flag them and an attacker who scrapes the repo within the validity window can exchange the OIDC token for real cloud credentials.
+
+**Mandatory practices for every FFC repo:**
+
+1. **`.gitignore` must include the patterns** for any auth files the workflows you use are known to emit. At minimum:
+   ```
+   gha-creds-*.json          # google-github-actions/auth@v2
+   *-credentials.json        # generic SA keys
+   .config/ffc-google/       # local FFC OAuth token cache
+   __pycache__/              # so leaked CI bytecode can't ride along
+   ```
+
+2. **Any workflow step that creates a PR or commit** (e.g. `peter-evans/create-pull-request`, `stefanzweifel/git-auto-commit-action`, raw `git add . && git commit`) **must use an explicit `add-paths` allowlist** of files to include. Never use `add-paths: '.'` or omit it (which defaults to "everything changed"). The allowlist should name only the files the automation is *expected* to produce.
+
+3. **Workload Identity Federation provider conditions** should be scoped as tight as possible:
+   - Prefer `assertion.repository == 'FreeForCharity/<exact-repo>'` over the broader `assertion.repository_owner == 'FreeForCharity'`.
+   - If a single provider really must serve multiple repos, use a per-repo `principalSet` binding so each SA only accepts tokens from its specific repo.
+
+4. **Service account hygiene** — when an SA is suspected of having a leaked or compromised token, the FFC-wide incident-response default is:
+   - `gcloud iam service-accounts disable <email>` immediately (reversible; blocks all impersonation).
+   - Investigate audit logs for unauthorized use.
+   - Re-enable only after the token's TTL has elapsed.
+
+5. **OAuth Desktop-app client secrets** issued from a GCP project (e.g. `client_secret_*.json` downloaded for FFC scripts like `bootstrap-sa-access.py`) — these are **public-ish** per Google's docs but should still be kept out of git. Store in user home (`~/.config/ffc-google/`) or a private FFC vault.
+
+When an incident does occur, log it in the repo's `SECURITY.md` under an "Incident log" section so future maintainers can see how it was handled. Reference: thecrookedhouse.net 2026-05-15 OIDC token leak.
+
 ---
 
 ## Testing Strategy
